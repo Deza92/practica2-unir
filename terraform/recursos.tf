@@ -134,4 +134,8 @@ resource "azurerm_kubernetes_cluster" "aks" {
     vm_size             = "Standard_D2_v2"
     enable_auto_scaling = false
   }
+
+  identity {
+    type = "SystemAssigned"
+  }
 }
