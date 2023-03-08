@@ -60,35 +60,6 @@ resource "azurerm_network_security_group" "ansg" {
 }
 
 ### MAQUINA VIRTUAL
-# Caracteristicas de la VM
-resource "azurerm_linux_virtual_machine" "vm" {
-  name                = "vm1"
-  resource_group_name = azurerm_resource_group.rg.name
-  location            = azurerm_resource_group.rg.location
-  size                = "Standard_F2"
-  admin_username      = "azure_unir"
-  network_interface_ids = [
-    azurerm_network_interface.nic.id,
-  ]
-
-  admin_ssh_key {
-    username   = "azure_unir"
-    public_key = file("~/.ssh/id_rsa.pub")
-  }
-
-  os_disk {
-    caching              = "ReadWrite"
-    storage_account_type = "Standard_LRS"
-  }
-
-  source_image_reference {
-    publisher = "Canonical"
-    offer     = "UbuntuServer"
-    sku       = "22.04-LTS"
-    version   = "latest"
-  }
-}
-
 # Caracteristicas de la NIC
 resource "azurerm_network_interface" "nic" {
   name                = "vnic"
@@ -106,6 +77,35 @@ resource "azurerm_network_interface" "nic" {
 resource "azurerm_network_interface_security_group_association" "association" {
   network_interface_id      = azurerm_network_interface.nic.id
   network_security_group_id = azurerm_network_security_group.ansg.id
+}
+
+# Caracteristicas de la VM
+resource "azurerm_linux_virtual_machine" "vm" {
+  name                = "vm1"
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.rg.location
+  size                = "Standard_F2"
+  admin_username      = var.ssh_user
+  network_interface_ids = [
+    azurerm_network_interface.nic.id,
+  ]
+
+  admin_ssh_key {
+    username   = var.ssh_user
+    public_key = file("~/.ssh/id_rsa.pub")
+  }
+
+  os_disk {
+    caching              = "ReadWrite"
+    storage_account_type = "Standard_LRS"
+  }
+
+  source_image_reference {
+    publisher = "Canonical"
+    offer     = "UbuntuServer"
+    sku       = "22.04-LTS"
+    version   = "latest"
+  }
 }
 
 
