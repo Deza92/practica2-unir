@@ -33,7 +33,7 @@ variable "ssh_user" {
 }
 
 # Variable del path de la public key de la vm
-variable "ssh_user" {
+variable "path_public_key" {
   type = string
   description = "Usuario para hacer ssh"
   default = "~/.ssh/id_rsa.pub"
