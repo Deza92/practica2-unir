@@ -14,38 +14,6 @@ resource "azurerm_role_assignment" "role_acrpull" {
   skip_service_principal_aad_check = true
 }
 
-
-### SECTION DOCKER IMAGE CONTAINER
-# Caracteristicas del registro de contenedores donde se almacenarán imágenes docker
-resource "azurerm_container_registry" "acr" {
-  name                = var.acr_name
-  resource_group_name = azurerm_resource_group.rg.name
-  location            = var.location_name
-  sku                 = "Standard"
-  admin_enabled       = true
-}
-
-
-### SECTION CLUSTER KUBERNETES
-# Características del cluster de Kubernetes en Azure
-resource "azurerm_kubernetes_cluster" "aks" {
-  location            = var.location_name
-  name                = var.cluster_name
-  resource_group_name = azurerm_resource_group.rg.name
-  dns_prefix          = var.cluster_name
-
-  default_node_pool {
-    name                = "default"
-    node_count          = var.agent_count
-    vm_size             = "Standard_D2_v2"
-    enable_auto_scaling = false
-  }
-
-  identity {
-    type = "SystemAssigned"
-  }
-}
-
 ### SECTION VIRTUAL NETWORK
 # Se especifican las características la red virtual
 resource "azurerm_virtual_network" "vnet" {
@@ -91,27 +59,7 @@ resource "azurerm_network_security_group" "ansg" {
   }
 }
 
-
 ### SECTION VIRTUAL MACHINE
-# Caracteristicas de la NIC
-resource "azurerm_network_interface" "nic" {
-  name                = "vnic"
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
-
-  ip_configuration {
-    name                          = "internal"
-    subnet_id                     = azurerm_subnet.subnet.id
-    private_ip_address_allocation = "Dynamic"
-  }
-}
-
-# Características de la asociacion de las reglas del puerto 22, 443, 8080
-resource "azurerm_network_interface_security_group_association" "association" {
-  network_interface_id      = azurerm_network_interface.nic.id
-  network_security_group_id = azurerm_network_security_group.ansg.id
-}
-
 # Caracteristicas de la VM
 resource "azurerm_linux_virtual_machine" "vm" {
   name                = "vm1"
@@ -138,5 +86,56 @@ resource "azurerm_linux_virtual_machine" "vm" {
     offer     = "UbuntuServer"
     sku       = "22.04-LTS"
     version   = "latest"
+  }
+}
+
+# Caracteristicas de la NIC
+resource "azurerm_network_interface" "nic" {
+  name                = "vnic"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+
+  ip_configuration {
+    name                          = "internal"
+    subnet_id                     = azurerm_subnet.subnet.id
+    private_ip_address_allocation = "Dynamic"
+  }
+}
+
+# Características de la asociacion de las reglas del puerto 22, 443, 8080
+resource "azurerm_network_interface_security_group_association" "association" {
+  network_interface_id      = azurerm_network_interface.nic.id
+  network_security_group_id = azurerm_network_security_group.ansg.id
+}
+
+
+### SECTION DOCKER IMAGE CONTAINER
+# Caracteristicas del registro de contenedores donde se almacenarán imágenes docker
+resource "azurerm_container_registry" "acr" {
+  name                = var.acr_name
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = var.location_name
+  sku                 = "Standard"
+  admin_enabled       = true
+}
+
+
+### SECTION CLUSTER KUBERNETES
+# Características del cluster de Kubernetes en Azure
+resource "azurerm_kubernetes_cluster" "aks" {
+  location            = var.location_name
+  name                = var.cluster_name
+  resource_group_name = azurerm_resource_group.rg.name
+  dns_prefix          = var.cluster_name
+
+  default_node_pool {
+    name                = "default"
+    node_count          = var.agent_count
+    vm_size             = "Standard_D2_v2"
+    enable_auto_scaling = false
+  }
+
+  identity {
+    type = "SystemAssigned"
   }
 }
