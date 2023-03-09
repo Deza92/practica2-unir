@@ -1,6 +1,6 @@
 # Recursos de la infraestructura que se desplegarán en Azure
 
-### RESOURCE GROUP
+### SECTION RESOURCE GROUP
 # Se indica el grupo de recursos de azure
 resource "azurerm_resource_group" "rg" {
   name     = var.resource_group_name
@@ -14,7 +14,7 @@ resource "azurerm_role_assignment" "role_acrpull" {
   skip_service_principal_aad_check = true
 }
 
-### Virtual Network
+### SECTION VIRTUAL NETWORK
 # Se especifican las características la red virtual
 resource "azurerm_virtual_network" "vnet" {
   name                = var.network_name
@@ -59,7 +59,7 @@ resource "azurerm_network_security_group" "ansg" {
   }
 }
 
-### MAQUINA VIRTUAL
+### SECTION VIRTUAL MACHINE
 # Caracteristicas de la VM
 resource "azurerm_linux_virtual_machine" "vm" {
   name                = "vm1"
@@ -109,7 +109,7 @@ resource "azurerm_network_interface_security_group_association" "association" {
 }
 
 
-### CONTENEDOR DE IMAGENES DOCKER
+### SECTION DOCKER IMAGE CONTAINER
 # Caracteristicas del registro de contenedores donde se almacenarán imágenes docker
 resource "azurerm_container_registry" "acr" {
   name                = var.acr_name
@@ -120,7 +120,7 @@ resource "azurerm_container_registry" "acr" {
 }
 
 
-### CLUSTER KUBERNETES
+### SECTION CLUSTER KUBERNETES
 # Características del cluster de Kubernetes en Azure
 resource "azurerm_kubernetes_cluster" "aks" {
   location            = var.location_name
