@@ -60,25 +60,6 @@ resource "azurerm_network_security_group" "ansg" {
 }
 
 ### MAQUINA VIRTUAL
-# Caracteristicas de la NIC
-resource "azurerm_network_interface" "nic" {
-  name                = "vnic"
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
-
-  ip_configuration {
-    name                          = "internal"
-    subnet_id                     = azurerm_subnet.subnet.id
-    private_ip_address_allocation = "Dynamic"
-  }
-}
-
-# Características de la asociacion de las reglas del puerto 22, 443, 8080
-resource "azurerm_network_interface_security_group_association" "association" {
-  network_interface_id      = azurerm_network_interface.nic.id
-  network_security_group_id = azurerm_network_security_group.ansg.id
-}
-
 # Caracteristicas de la VM
 resource "azurerm_linux_virtual_machine" "vm" {
   name                = "vm1"
@@ -106,6 +87,25 @@ resource "azurerm_linux_virtual_machine" "vm" {
     sku       = "22.04-LTS"
     version   = "latest"
   }
+}
+
+# Caracteristicas de la NIC
+resource "azurerm_network_interface" "nic" {
+  name                = "vnic"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+
+  ip_configuration {
+    name                          = "internal"
+    subnet_id                     = azurerm_subnet.subnet.id
+    private_ip_address_allocation = "Dynamic"
+  }
+}
+
+# Características de la asociacion de las reglas del puerto 22, 443, 8080
+resource "azurerm_network_interface_security_group_association" "association" {
+  network_interface_id      = azurerm_network_interface.nic.id
+  network_security_group_id = azurerm_network_security_group.ansg.id
 }
 
 
