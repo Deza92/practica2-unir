@@ -36,7 +36,7 @@ variable "ssh_user" {
 variable "path_public_key" {
   type = string
   description = "Usuario para hacer ssh"
-  default = "~/.ssh/id_rsa.pub"
+  #default = "~/.ssh/id_rsa.pub"
 }
 
 # Variable del nombre del registro de los contenedores
