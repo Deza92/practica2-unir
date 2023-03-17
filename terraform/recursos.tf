@@ -67,7 +67,6 @@ resource "azurerm_linux_virtual_machine" "vm" {
   location            = azurerm_resource_group.rg.location
   size                = "Standard_F2"
   admin_username      = "azureuser"
-  disable_password_authentication = true
   network_interface_ids = [
     azurerm_network_interface.nic.id,
   ]
@@ -88,9 +87,12 @@ resource "azurerm_linux_virtual_machine" "vm" {
     linux_configuration {
       computer_name_prefix = "myPrefix"
       admin_username       = "myadmin"
-
-      disable_password_authentication = false
+      admin_password = "Password1234!"
     }
+  }
+
+  os_profile_linux_config {
+    disable_password_authentication = false
   }
 }
 
