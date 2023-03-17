@@ -83,6 +83,11 @@ resource "azurerm_linux_virtual_machine" "vm" {
     sku       = "22.04-LTS"
     version   = "latest"
   }
+
+  os_profile {
+    computer_name  = "hotstname"
+    admin_username = "adminname"
+  }
 }
 
 # Caracteristicas de la NIC
