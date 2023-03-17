@@ -68,6 +68,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
   size                = "Standard_F2"
   computer_name       = "pcUnir"
   admin_username      = "azureuser"
+  disable_password_authentication = true
   network_interface_ids = [
     azurerm_network_interface.nic.id,
   ]
