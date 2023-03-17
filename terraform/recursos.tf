@@ -66,6 +66,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   size                = "Standard_F2"
+  computer_name       = "pcUnir"
   admin_username      = "azureuser"
   network_interface_ids = [
     azurerm_network_interface.nic.id,
@@ -81,18 +82,6 @@ resource "azurerm_linux_virtual_machine" "vm" {
     offer     = "UbuntuServer"
     sku       = "22.04-LTS"
     version   = "latest"
-  }
-
-  os_profile {
-    linux_configuration {
-      computer_name_prefix = "myPrefix"
-      admin_username       = "myadmin"
-      admin_password = "Password1234!"
-    }
-  }
-
-  os_profile_linux_config {
-    disable_password_authentication = false
   }
 }
 
