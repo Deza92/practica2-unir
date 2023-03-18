@@ -67,14 +67,10 @@ resource "azurerm_linux_virtual_machine" "vm" {
   location            = azurerm_resource_group.rg.location
   size                = "Standard_F2"
   computer_name       = "pcUnir"
-  admin_username      = var.ssh_user
+  admin_username      = "adminuser"
+  admin_password      = "P@ssw0rd1234!"
+  disable_password_authentication = false
   network_interface_ids = [azurerm_network_interface.nic.id]
-  disable_password_authentication = true
-
-  admin_ssh_key {
-    username   = var.ssh_user
-    public_key = file(var.path_public_key)
-  }
 
   os_disk {
     caching              = "ReadWrite"
