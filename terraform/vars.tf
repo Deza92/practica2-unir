@@ -27,17 +27,24 @@ variable "subnet_name" {
 }
 
 # Variable del nombre del admin de la vm
-variable "ssh_user" {
+variable "user" {
   type = string
   default = "azureuser"
   description = "Usuario para hacer ssh"
 }
 
 # Variable del path de la public key de la vm
-variable "path_public_key" {
+#variable "path_public_key" {
+#  type = string
+#  description = "path de la clave pública"
+#  default = "~/.ssh/id_rsa.pub"
+#}
+
+# Variable de la contraseña del usuario 
+variable "pass_user" {
   type = string
-  description = "path de la clave pública"
-  default = "~/.ssh/azure.pub"
+  default = "passUnir"
+  description = "password usuario user"
 }
 
 # Variable del nombre del registro de los contenedores

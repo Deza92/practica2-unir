@@ -62,15 +62,16 @@ resource "azurerm_network_security_group" "ansg" {
 ### SECTION VIRTUAL MACHINE
 # Caracteristicas de la VM
 resource "azurerm_linux_virtual_machine" "vm" {
-  name                = "vm_unir"
+  name                = "vm1Unir"
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   size                = "Standard_F2"
-  computer_name       = "pcUnir"
-  admin_username      = "adminuser"
-  admin_password      = "P@ssw0rd1234!"
+  admin_username      = var.user
+  admin_password      = var.pass_user
   disable_password_authentication = false
-  network_interface_ids = [azurerm_network_interface.nic.id]
+  network_interface_ids = [
+    azurerm_network_interface.nic.id,
+  ]
 
   os_disk {
     caching              = "ReadWrite"
@@ -83,9 +84,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
     sku       = "22.04-LTS"
     version   = "latest"
   }
-  
 }
-
 # Caracteristicas de la NIC
 resource "azurerm_network_interface" "nic" {
   name                = "vnic"
