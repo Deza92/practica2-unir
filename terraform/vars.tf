@@ -20,11 +20,11 @@ variable "network_name" {
 }
 
 # Variable de la subred del proyecto
-variable "subnet_name" {
-  type = string
-  description = "Subred de Azure que se utiliza para el proyecto"
-  default = "subnet1"
-}
+#variable "subnet_name" {
+#  type = string
+#  description = "Subred de Azure que se utiliza para el proyecto"
+#  default = "subnet1"
+#}
 
 # Variable del nombre del admin de la vm
 variable "ssh_user" {
@@ -36,7 +36,7 @@ variable "ssh_user" {
 variable "path_public_key" {
   type = string
   description = "path de la clave pública"
-  #default = "~/.ssh/id_rsa.pub"
+  default = "~/.ssh/id_rsa.pub"
 }
 
 # Variable del nombre del registro de los contenedores
