@@ -43,7 +43,7 @@ variable "user" {
 # Variable de la contraseña del usuario 
 variable "pass_user" {
   type = string
-  default = "passUnir"
+  default = "passUnir_"
   description = "password usuario user"
 }
 
