@@ -2,7 +2,7 @@
 variable "resource_group_name" {
   type = string
   description = "Resource group de Azure que se utiliza para el proyecto"
-  default = "rg-createdbyTF"
+  default = "rg-unir-p2"
 }
 
 # Variable de la localización
