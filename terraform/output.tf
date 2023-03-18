@@ -7,3 +7,8 @@ output "resource_group_id" {
 output "vm_id" {
   value = azurerm_linux_virtual_machine.vm.id
 }
+
+# Se indica el ID de la VM
+output "vm_ip" {
+  value = azurerm_linux_virtual_machine.vm.ip_address
+}
