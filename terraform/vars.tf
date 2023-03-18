@@ -37,7 +37,7 @@ variable "ssh_user" {
 variable "path_public_key" {
   type = string
   description = "path de la clave pública"
-  default = "~/.ssh/id_rsa.pub"
+  default = "~/.ssh/azure.pub"
 }
 
 # Variable del nombre del registro de los contenedores
