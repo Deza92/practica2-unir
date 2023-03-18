@@ -29,15 +29,16 @@ variable "subnet_name" {
 # Variable del nombre del admin de la vm
 variable "ssh_user" {
   type = string
+  default = "azureuser"
   description = "Usuario para hacer ssh"
 }
 
 # Variable del path de la public key de la vm
-#variable "path_public_key" {
-#  type = string
-#  description = "path de la clave pública"
-#  default = "~/.ssh/id_rsa.pub"
-#}
+variable "path_public_key" {
+  type = string
+  description = "path de la clave pública"
+  default = "~/.ssh/id_rsa.pub"
+}
 
 # Variable del nombre del registro de los contenedores
 variable "acr_name" {
@@ -47,7 +48,8 @@ variable "acr_name" {
 
 # Variable del nombre del cluster de kubernetes
 variable "cluster_name" {
-  type        = string
+  type = string
+  default = "clusterUnir"
   description = "Nombre del cluster kubernetes"
 }
 
