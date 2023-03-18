@@ -50,6 +50,7 @@ variable "pass_user" {
 # Variable del nombre del registro de los contenedores
 variable "acr_name" {
   type        = string
+  default = "acrUnir"
   description = "Nombre del registro de contenedores"
 }
 
