@@ -36,8 +36,8 @@ resource "azurerm_public_ip" "public_ip" {
   name                = "public_ip"
   location            = var.location_name
   resource_group_name = azurerm_resource_group.rg.name
-  allocation_method   = "Static"
-  sku                 = "Standard"
+  allocation_method   = "Dynamic"
+  sku                 = "Basic"
 }
 
 # Características puertos 22, 443, 8080
@@ -95,6 +95,7 @@ resource "azurerm_network_interface" "nic" {
     name                          = "internal"
     subnet_id                     = azurerm_subnet.subnet.id
     private_ip_address_allocation = "Dynamic"
+    public_ip_address_id          = azurerm_public_ip.public_ip.id
   }
 }
 
