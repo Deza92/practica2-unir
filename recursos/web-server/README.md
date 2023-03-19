@@ -17,7 +17,7 @@ A continuación se describe el procedimiento (manual) de instalación de un serv
 * apache2
 * openssl
 
-Se realiza el update y upgrade de la versión de los paquetes
+Se realiza el update y upgrade de la versión de los paquetes:
 
 ```
 sudo apt update
@@ -35,19 +35,19 @@ sudo apt-get install software-properties-common -y
 sudo add-apt-repository -y ppa:projectatomic/ppa
 ```
 
-Se instala Podman
+Se instala Podman:
 
 ```
 sudo apt-get install podman -y
 ```
 
-Se instala Skopeo
+Se instala Skopeo:
 
 ```
 sudo apt-get -y install skopeo
 ```
 
-Se instala Apache2
+Se instala Apache2:
 
 ```
 sudo apt install apache2
@@ -57,7 +57,7 @@ sudo apt install apache2
 sudo a2enmod ssl
 ```
 
-Se instala OpenSSL
+Se instala OpenSSL:
 
 ```
 sudo apt-get install openssl
