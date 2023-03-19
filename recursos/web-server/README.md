@@ -14,8 +14,10 @@ A continuación se describe el procedimiento (manual) de instalación de un serv
 
 * podman
 * skopeo
-* httpd-tools
+* apache2
 * openssl
+
+Se realiza el update y upgrade de la versión de los paquetes
 
 ```
 sudo apt update
@@ -33,13 +35,19 @@ sudo apt-get install software-properties-common -y
 sudo add-apt-repository -y ppa:projectatomic/ppa
 ```
 
+Se instala Podman
+
 ```
 sudo apt-get install podman -y
 ```
 
+Se instala Skopeo
+
 ```
 sudo apt-get -y install skopeo
 ```
+
+Se instala Apache2
 
 ```
 sudo apt install apache2
@@ -49,39 +57,45 @@ sudo apt install apache2
 sudo a2enmod ssl
 ```
 
-3. Crear un directorio de trabajo.
+Se instala OpenSSL
+
+```
+sudo apt-get install openssl
+```
+
+2. Crear un directorio de trabajo.
 
 ```
 mkdir webserver && cd webserver
 ```
 
-4. Crear el fichero de credenciales para la autenticación básica en el servidor Web.
+3. Crear el fichero de credenciales para la autenticación básica en el servidor Web.
 
 ```
 htpasswd -cBb .creds <USERNAME> <PASSWORD>
 ```
 
-5. Generación del certificado autofirmado.
+4. Generación del certificado autofirmado.
 
-5.1 Crear clave privada para el certificado:
+4.1 Crear clave privada para el certificado:
 
 ```
 openssl genrsa -out <KEY_NAME>.key 2048
 ```
 
-5.2 Crear la petición de firma del certificado:
+4.2 Crear la petición de firma del certificado:
 
 ```
 openssl req -key <KEY_NAME>.key -new -out <CSR_NAME>.csr -subj "/C=ES/ST=Madrid/L=Madrid/O=DevOps/OU=Ejemplo/CN=vm1"
 ```
 
-5.3 Crear certificado utilizando la clave privada y la petición de firma:
+4.3 Crear certificado utilizando la clave privada y la petición de firma:
 
 ```
 openssl x509 -signkey <KEY_NAME>.key -in <CSR_NAME>.csr -req -days 365 -out <CERT_NAME>.crt
 ```
 
-6. Definir la página principal del servidor Web:
+5. Definir la página principal del servidor Web:
 
 ```
 cat <<EOF > index.html
@@ -89,7 +103,7 @@ cat <<EOF > index.html
 EOF
 ```
 
-7. Definir la configuración del servidor Web. Cambiar dentro del fichero el nombre de localhost, por el nombre de la key y del crt:
+6. Definir la configuración del servidor Web. Cambiar dentro del fichero el nombre de localhost, por el nombre de la key y del crt:
 
 ```
 cat <<EOF > httpd.conf
@@ -205,7 +219,7 @@ SSLRandomSeed connect builtin
 EOF
 ```
 
-8. Establecer la configuración de autenticación básica:
+7. Establecer la configuración de autenticación básica:
 
 ```
 cat <<EOF > .htaccess
@@ -216,7 +230,7 @@ Require valid-user
 EOF
 ```
 
-9. Definir el fichero para la creación de la imagen del contenedor. Cambiar localhost por la key y el crt creado anteriormente:
+8. Definir el fichero para la creación de la imagen del contenedor. Cambiar localhost por la key y el crt creado anteriormente:
 
 ```
 cat <<EOF > Containerfile
@@ -230,63 +244,63 @@ COPY LOCALHOST.crt /usr/local/apache2/
 EOF
 ```
 
-10. Generar la imagen del contenedor
+9. Generar la imagen del contenedor
 
 ```
 sudo podman build -t webserver .
 ```
 
-11. Etiquetar la imagen del contenedor
+10. Etiquetar la imagen del contenedor
 
 ```
 sudo podman tag localhost/webserver:latest <REGISTRY_URL>/<REPOSITORY>:TAG
 ```
 
-12. Subir la imagen del contenedor al registry
+11. Subir la imagen del contenedor al registry
 
-12.1 Autenticarse en el ***Registry***
+11.1 Autenticarse en el ***Registry***
 
 ```
 sudo podman login -u <USERNAME> -p <PASSWORD>
 ```
 
-12.2 Subir la imagen del contenedor al ***Registry***
+11.2 Subir la imagen del contenedor al ***Registry***
 
 ```
 sudo podman push <REGISTRY_URL>/<REPOSITORY>:TAG
 ``` 
 
-13. Crear el contenedor del servicio Web a partir de la imagen creada en el paso anterior:
+12. Crear el contenedor del servicio Web a partir de la imagen creada en el paso anterior:
 
 ```
 sudo podman create --name web -p 8080:443 localhost/webserver
 ```
 
-14. Generar los ficheros para gestionar el contenedor a través de **systemd**
+13. Generar los ficheros para gestionar el contenedor a través de **systemd**
 
 ```
 sudo podman generate systemd --new --files --name web
 ```
 
-15. Copiar los ficheros generados en el paso previo al directorio de **systemd**
+14. Copiar los ficheros generados en el paso previo al directorio de **systemd**
 
 ```
 sudo cp -Z container-web.service /etc/systemd/system/
 ```
 
-16. Recargar la configuración de systemd
+15. Recargar la configuración de systemd
 
 ```
 sudo systemctl daemon-reload
 ```
 
-17. Iniciar la aplicación Web desde **systemd**
+16. Iniciar la aplicación Web desde **systemd**
 
 ```
 sudo systemctl enable container-web.service --now
 ```
 
-18. Verificar la conectividad al servidor Web
+17. Verificar la conectividad al servidor Web
 
 ```
 curl -k https://<USERNAME>:<PASSWORD>@localhost:8080
