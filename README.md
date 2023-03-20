@@ -18,4 +18,4 @@ Descripción de la actividad:
 - Un repositorio de imágenes de contenedores sobre infraestructura de Microsoft Azure mediante el servicio Azure Container Registry (ACR). 
 - Una aplicación en forma de contenedor utilizando Podman sobre una máquina virtual en Azure.
 - Un cluster de Kubernetes como servicio gestionado en Microsoft Azure (AKS). 
-- Una aplicación con almacenamiento persistente sobre el cluster AKS. 
+- Una aplicación con almacenamiento persistente sobre el cluster AKS.
